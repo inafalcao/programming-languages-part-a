@@ -59,3 +59,64 @@ fun dates_in_months(dates: (int*int*int) list, months: int list) =
 
 val test5 = dates_in_months ([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)]
 
+
+(* 6. Return the nth element of a list  *)
+fun get_nth(list1: string list, n: int) =
+
+	let fun accumulate(helperList: string list, accumulator: int) =
+		if(accumulator = n)
+		then hd helperList
+		else accumulate(tl helperList, accumulator + 1)
+	in
+		accumulate(list1, 1)
+	end
+
+val test6 = get_nth (["hi", "there", "how", "are", "you"], 2) = "there"
+
+
+(* 7. Convert date in a human redable format. *)
+fun date_to_string(date: int*int*int) =
+	get_nth(["January", "February", "March", "April", "May", 
+			 "June", "July", "August", "September", "October", "November", "December"], #2 date) ^ 
+	" " ^
+	Int.toString(#3 date) ^
+	", " ^
+	Int.toString(#1 date)
+
+val test7 = date_to_string (2013, 6, 1) = "June 1, 2013"
+
+
+(* 8. *)
+fun number_before_reaching_sum(sum: int, numbers: int list) =
+	let fun accumulate(nums: int list, acc: int, previous: int) =
+		if(null (tl nums) orelse hd nums + acc >= sum)
+		then previous
+		else accumulate(tl nums, hd nums + acc, hd nums)
+	in
+		accumulate(tl numbers, hd numbers, hd numbers)
+	end
+
+val test8 = number_before_reaching_sum (36, [31, 28, 31, 30])
+
+
+(* 9. Return the month of the day. *)
+fun what_month(day: int) =
+	let
+		val numbers = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+		fun accumulate(nums: int list, acc: int, month: int) =
+			if(day <= acc) 
+			then month 
+			else
+				if(null (tl nums) orelse hd nums + acc >= day)
+				then month + 1
+				else accumulate(tl nums, hd nums + acc, month + 1)
+
+	in
+		accumulate(tl numbers, hd numbers, 1)
+
+	end
+
+val test9 = what_month 70 = 3
+
+
