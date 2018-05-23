@@ -1,9 +1,11 @@
 
 (* 1. *)
 fun is_older(date1: int*int*int, date2: int*int*int) =
-	(#1 date1 < #1 date2) orelse (* Year *)
-	(#2 date1 < #2 date2) orelse (* Month *)
-	(#3 date1 < #3 date2)		 (* Day *)
+	if(#1 date1 <> #1 date2) 	   (* Year *)
+	then (#1 date1 < #1 date2)
+	else if(#2 date1 <> #2 date2)  (* Month *)
+	then (#2 date1 < #2 date2) 
+	else (#3 date1 < #3 date2)	   (* Day *)
 
 val test1 = is_older ((1,2,3),(2,3,4)) = true
 
@@ -120,3 +122,35 @@ fun what_month(day: int) =
 val test9 = what_month 70 = 3
 
 
+(* 10. *)
+
+fun month_range(day1: int, day2: int) =
+	let fun range(list1: int list, countDown: int) =
+		if(countDown < day1)
+		then list1
+		else range(what_month(countDown) :: list1, countDown - 1)
+	in
+		range([], day2)
+	end
+
+val test10 	 = month_range (31, 34) = [1,2,2,2]
+val test10_0 = month_range (34, 31) = []
+
+
+(* 11. *)
+
+fun oldest(list1: (int*int*int) list) =
+	let fun older(date: (int*int*int), remainingDates: (int*int*int) list) =
+		if(null remainingDates)
+		then date
+		else
+			if(is_older(hd remainingDates, date))
+			then older(hd remainingDates, tl remainingDates)
+			else older(date, tl remainingDates)
+	in
+		if(null list1)
+		then NONE
+		else SOME(older(hd list1, tl list1))
+	end
+
+val test11 = oldest([(2012,2,28),(2011,3,31),(2011,4,28)]) = SOME (2011,3,31)
