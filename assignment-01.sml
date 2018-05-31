@@ -1,4 +1,3 @@
-
 (* 1. *)
 fun is_older(date1: int*int*int, date2: int*int*int) =
 	if(#1 date1 <> #1 date2) 	   (* Year *)
@@ -6,9 +5,6 @@ fun is_older(date1: int*int*int, date2: int*int*int) =
 	else if(#2 date1 <> #2 date2)  (* Month *)
 	then (#2 date1 < #2 date2) 
 	else (#3 date1 < #3 date2)	   (* Day *)
-
-val test1 = is_older ((1,2,3),(2,3,4)) = true
-
 
 (* 2. Return how many dates in the list are in the given month *)
 fun number_in_month(dates: (int*int*int) list, month: int) =
@@ -21,18 +17,12 @@ fun number_in_month(dates: (int*int*int) list, month: int) =
 		else
 			0 + number_in_month(tl dates, month)
 
-val test2 = number_in_month ([(2012,2,28),(2013,12,1)],2) = 1
-
-
 (* 3.  *)
 fun number_in_months(dates: (int*int*int) list, months: int list) =
 	if (null (tl months))
 	then number_in_month(dates, hd months)
 	else
 		number_in_month(dates, hd months) + number_in_months(dates, tl months)
-
-
-val test3 = number_in_months ([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3
 
 
 (* 4. Return the list of dates in a given month *)
@@ -42,9 +32,6 @@ fun dates_in_month(dates: (int*int*int) list, month: int) =
 	else if(#2 (hd dates) = month)
 		 then hd dates :: dates_in_month(tl dates, month)
 		 else dates_in_month(tl dates, month)
-
-val test4 = dates_in_month ([(2012,2,28),(2013,12,1), (2014, 2, 1)],2) = [(2012,2,28), (2014, 2, 1)]
-
 
 (* 5. Return all the dates whose month is in months *)
 fun dates_in_months(dates: (int*int*int) list, months: int list) =
@@ -59,9 +46,6 @@ fun dates_in_months(dates: (int*int*int) list, months: int list) =
 		else concat(dates_in_month(dates, hd months), dates_in_months(dates, tl months))
 	end
 
-val test5 = dates_in_months ([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)]
-
-
 (* 6. Return the nth element of a list  *)
 fun get_nth(list1: string list, n: int) =
 
@@ -73,9 +57,6 @@ fun get_nth(list1: string list, n: int) =
 		accumulate(list1, 1)
 	end
 
-val test6 = get_nth (["hi", "there", "how", "are", "you"], 2) = "there"
-
-
 (* 7. Convert date in a human redable format. *)
 fun date_to_string(date: int*int*int) =
 	get_nth(["January", "February", "March", "April", "May", 
@@ -84,9 +65,6 @@ fun date_to_string(date: int*int*int) =
 	Int.toString(#3 date) ^
 	", " ^
 	Int.toString(#1 date)
-
-val test7 = date_to_string (2013, 6, 1) = "June 1, 2013"
-
 
 (* 8. *)
 fun number_before_reaching_sum(sum: int, numbers: int list) =
@@ -97,8 +75,6 @@ fun number_before_reaching_sum(sum: int, numbers: int list) =
 	in
 		accumulate(tl numbers, hd numbers, hd numbers)
 	end
-
-val test8 = number_before_reaching_sum (36, [31, 28, 31, 30])
 
 
 (* 9. Return the month of the day. *)
@@ -119,11 +95,7 @@ fun what_month(day: int) =
 
 	end
 
-val test9 = what_month 70 = 3
-
-
 (* 10. *)
-
 fun month_range(day1: int, day2: int) =
 	let fun range(list1: int list, countDown: int) =
 		if(countDown < day1)
@@ -133,12 +105,7 @@ fun month_range(day1: int, day2: int) =
 		range([], day2)
 	end
 
-val test10 	 = month_range (31, 34) = [1,2,2,2]
-val test10_0 = month_range (34, 31) = []
-
-
 (* 11. *)
-
 fun oldest(list1: (int*int*int) list) =
 	let fun older(date: (int*int*int), remainingDates: (int*int*int) list) =
 		if(null remainingDates)
@@ -152,5 +119,3 @@ fun oldest(list1: (int*int*int) list) =
 		then NONE
 		else SOME(older(hd list1, tl list1))
 	end
-
-val test11 = oldest([(2012,2,28),(2011,3,31),(2011,4,28)]) = SOME (2011,3,31)
