@@ -21,17 +21,17 @@ exception IllegalMove
 
 (* put your solutions for problem 2 here *)
 
-
 (* 1. *)
 fun all_except_option(w: string, tokens: string list) =
 	let fun extract(tokens: string list) =
 		case tokens of
-			[] => []
-		| 	xs::ys => if(same_string(xs, w)) then ys else xs :: extract(ys)
-	ins
-		case extract(tokens) of
-			[] => (case tokens of [] => NONE | _ => SOME [])
-		|	x::y => if(x::y = tokens) then NONE else SOME(x::y)
+			  [] => []
+			| xs::ys => if(same_string(xs, w)) then ys else xs :: extract(ys)
+	in
+		case (tokens, extract(tokens)) of
+			  (a::[], []) => SOME [] 
+			| (a::b, c::d) => if(a = c andalso b = d) then NONE else SOME(c::d)
+			| _ => NONE	
 	end
 
 val test1 = all_except_option ("string", ["string"]) = SOME []
@@ -49,5 +49,5 @@ fun get_substitutions1(matrix: string list list, w: string) =
 			| 	NONE => get_substitutions1(ys, w)
 			end
 
-val test1 = all_except_option ("notstring", ["string"]) = NONE
-val test2 = get_substitutions1 ([["foo"],["there"]], "foo") = []
+val test2 = all_except_option ("notstring", ["string"]) = NONE
+val test2_1 = get_substitutions1 ([["foo"],["there"]], "foo") = []
