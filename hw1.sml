@@ -15,7 +15,7 @@ fun number_in_month(dates: (int*int*int) list, month: int) =
 		then
 			1 + number_in_month(tl dates, month)
 		else
-			0 + number_in_month(tl dates, month)
+			number_in_month(tl dates, month)
 
 (* 3.  *)
 fun number_in_months(dates: (int*int*int) list, months: int list) =
@@ -35,27 +35,22 @@ fun dates_in_month(dates: (int*int*int) list, month: int) =
 
 (* 5. Return all the dates whose month is in months *)
 fun dates_in_months(dates: (int*int*int) list, months: int list) =
-
-	let fun concat(list1: (int*int*int) list, list2: (int*int*int) list) =
+	(* Didn't know I could use @ operator. *)
+	(*let fun concat(list1: (int*int*int) list, list2: (int*int*int) list) =
 		if(null list1)
 		then list2
 		else hd list1 :: concat(tl list1, list2)
-	in
-		if(null months)
-		then []
-		else concat(dates_in_month(dates, hd months), dates_in_months(dates, tl months))
-	end
+	in*)
+	if(null months)
+	then []
+	else dates_in_month(dates, hd months) @ dates_in_months(dates, tl months)
+	
 
 (* 6. Return the nth element of a list  *)
 fun get_nth(list1: string list, n: int) =
-
-	let fun accumulate(helperList: string list, accumulator: int) =
-		if(accumulator = n)
-		then hd helperList
-		else accumulate(tl helperList, accumulator + 1)
-	in
-		accumulate(list1, 1)
-	end
+	if(n = 1)
+	then hd list1
+	else get_nth(tl list1, n - 1)
 
 (* 7. Convert date in a human redable format. *)
 fun date_to_string(date: int*int*int) =
@@ -67,32 +62,20 @@ fun date_to_string(date: int*int*int) =
 	Int.toString(#1 date)
 
 (* 8. *)
+(* todo: I think this is wrong. fix. *)
+(* todo: do I have to consider the 0 case? *)
 fun number_before_reaching_sum(sum: int, numbers: int list) =
-	let fun accumulate(nums: int list, acc: int, previous: int) =
-		if(null (tl nums) orelse hd nums + acc >= sum)
-		then previous
-		else accumulate(tl nums, hd nums + acc, hd nums)
-	in
-		accumulate(tl numbers, hd numbers, hd numbers)
-	end
-
+	if((sum) <= 0)
+	then 0
+	else 1 + number_before_reaching_sum(sum - hd numbers, tl numbers)
 
 (* 9. Return the month of the day. *)
+(* What if I call what_month(31) ?? *)
 fun what_month(day: int) =
 	let
 		val numbers = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-		fun accumulate(nums: int list, acc: int, month: int) =
-			if(day <= acc) 
-			then month 
-			else
-				if(null (tl nums) orelse hd nums + acc >= day)
-				then month + 1
-				else accumulate(tl nums, hd nums + acc, month + 1)
-
 	in
-		accumulate(tl numbers, hd numbers, 1)
-
+		number_before_reaching_sum(day, numbers)
 	end
 
 (* 10. *)

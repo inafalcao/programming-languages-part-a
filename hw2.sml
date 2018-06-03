@@ -49,5 +49,36 @@ fun get_substitutions1(matrix: string list list, w: string) =
 			| 	NONE => get_substitutions1(ys, w)
 			end
 
-val test2 = all_except_option ("notstring", ["string"]) = NONE
-val test2_1 = get_substitutions1 ([["foo"],["there"]], "foo") = []
+(* 3. same as get_substitutions1, but using tail recursion *)
+fun get_substitutions2(matrix: string list list, w: string) =
+	let fun aux(rest: string list list, acc: string list) =
+		case rest of
+		  [] => acc
+		| hd::tl => (case all_except_option(w, hd) of
+			  SOME l => aux(tl, acc @ l)
+			| NONE => aux(tl, acc ) )
+	in
+		aux(matrix, [])
+	end
+
+
+(*
+
+similar_names([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]],
+{first="Fred", middle="W", last="Smith"})
+
+answer: 
+
+[{first="Fred", last="Smith", middle="W"},
+{first="Fredrick", last="Smith", middle="W"},
+{first="Freddie", last="Smith", middle="W"},
+{first="F", last="Smith", middle="W"}]
+
+*)
+
+(* 1. Get list for first name using get_substitutions2(names, firstName) *)
+(* 2. Make a racursion at that list *)
+
+type fullName = {first: string, last: string, middle: string}
+let fun similar_names(names: string list list, name: fullName) =
+	
