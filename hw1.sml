@@ -44,7 +44,7 @@ fun dates_in_months(dates: (int*int*int) list, months: int list) =
 	if(null months)
 	then []
 	else dates_in_month(dates, hd months) @ dates_in_months(dates, tl months)
-	
+
 
 (* 6. Return the nth element of a list  *)
 fun get_nth(list1: string list, n: int) =
@@ -62,10 +62,8 @@ fun date_to_string(date: int*int*int) =
 	Int.toString(#1 date)
 
 (* 8. *)
-(* todo: I think this is wrong. fix. *)
-(* todo: do I have to consider the 0 case? *)
 fun number_before_reaching_sum(sum: int, numbers: int list) =
-	if((sum) <= 0)
+	if((sum) <= hd numbers)
 	then 0
 	else 1 + number_before_reaching_sum(sum - hd numbers, tl numbers)
 
@@ -75,18 +73,15 @@ fun what_month(day: int) =
 	let
 		val numbers = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 	in
-		number_before_reaching_sum(day, numbers)
+		1 + number_before_reaching_sum(day, numbers)
 	end
 
 (* 10. *)
 fun month_range(day1: int, day2: int) =
-	let fun range(list1: int list, countDown: int) =
-		if(countDown < day1)
-		then list1
-		else range(what_month(countDown) :: list1, countDown - 1)
-	in
-		range([], day2)
-	end
+	if(day2 < day1)
+	then []
+	else what_month(day1) :: month_range(day1 + 1, day2)
+
 
 (* 11. *)
 fun oldest(list1: (int*int*int) list) =
