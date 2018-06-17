@@ -126,7 +126,7 @@ Throws ex if c is not in the list.
 fun remove_card(cards: card list, card: card, ex) = 
 	case cards of
 		  [] => raise ex
-		| h::[] => if(h = card) then [] else h::[]
+		| h::[] => if(h = card) then [] else raise ex
 		| h::t => if(h = card) then t else h :: remove_card(t, card, ex)  
 
 
